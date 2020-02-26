@@ -1,21 +1,20 @@
 package com.company;
 
 import com.company.exception.TractorOutOfBoundsException;
-import com.company.exception.Entity2DOutOfBoundsException;
+import com.company.exception.EntityOutOfBoundsException;
 
-public class Tractor extends Entity2D {
+public class Tractor extends Entity {
 
-    public Tractor(Position2D position) {
+    public Tractor(Position position, Orientation orientation) {
         this.position = position; 
-    }
-
-    @Override    
-    public void draw() {
-        System.out.println(this);
+        this.orientation = orientation;
     }
 
     @Override
-    public Entity2DOutOfBoundsException getException() {
+    public void draw() {}
+
+    @Override
+    public EntityOutOfBoundsException getException() {
         return new TractorOutOfBoundsException();
     }
     

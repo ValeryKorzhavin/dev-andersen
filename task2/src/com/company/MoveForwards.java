@@ -1,9 +1,10 @@
 package com.company;
 
-public class MoveForwards implements Movable2D {
+public class MoveForwards implements MoveBehavior {
 
-    public void changePosition(Position2D position, int points) {
-        position.change(points);
+    public Position performMove(Position position, 
+                                Orientation orientation, int speed) {
+        return orientation.moveThisDirection(position, speed);
     }
 
 }

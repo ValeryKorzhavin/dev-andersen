@@ -3,26 +3,26 @@ package com.company;
 import java.util.List;
 import java.util.ArrayList;
 
-public class System2D {
+public class CoordSystem {
 
     private int[][] field;
 
-    private List<Entity2D> entities = new ArrayList<>();
+    private List<Entity> entities = new ArrayList<>();
 
-    public System2D(int xSize, int ySize) {
+    public CoordSystem(int xSize, int ySize) {
         this.field = new int[xSize][ySize];
     }
 
-    public System2D(int fieldSize) {
+    public CoordSystem(int fieldSize) {
         this(fieldSize, fieldSize);
     }
 
-	public void addEntity(Entity2D entity) {
+    public void addEntity(Entity entity) {
         entity.setField(this);
         entities.add(entity);
     }
 
-	public void removeEntity(Entity2D entity) {
+    public void removeEntity(Entity entity) {
         boolean success = entities.remove(entity);
         if (success) {
             entity.setField(null);
@@ -38,11 +38,7 @@ public class System2D {
     }
 
     public void draw() {
-        entities.stream().forEach(Entity2D::draw);
-    }
-
-    public void checkBounds() {
-        entities.stream().forEach(Entity2D::checkBounds);
+        entities.stream().forEach(Entity::draw);
     }
 
 }
