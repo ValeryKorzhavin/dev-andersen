@@ -3,7 +3,6 @@ package com.company;
 import java.util.List;
 import java.util.ArrayList;
 
-
 public class System2D {
 
     private int[][] field;

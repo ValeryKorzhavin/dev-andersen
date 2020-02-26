@@ -1,9 +1,9 @@
 package com.company;
 
-public class TurnClockwise implements Turnable2D {
+public class TurnClockwise implements Movable2D {
 	
-	public void change(Orientation2D orientation, int points) {
-		
+	public void changePosition(Position2D position, int points) {
+        position.turnRight();
 	}
 
 }

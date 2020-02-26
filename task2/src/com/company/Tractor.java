@@ -5,14 +5,12 @@ import com.company.exception.Entity2DOutOfBoundsException;
 
 public class Tractor extends Entity2D {
 
-    public Tractor(Position2D position, Orientation2D orientation) {
+    public Tractor(Position2D position) {
         this.position = position; 
-        this.orientation = orientation;
     }
 
     @Override    
     public void draw() {
-        System.out.println("Draw tractor");
         System.out.println(this);
     }
 
