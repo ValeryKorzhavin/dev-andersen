@@ -32,5 +32,4 @@ public class Position {
         return String.format("x: %d, y: %d", x, y);
     }
 
-
 }

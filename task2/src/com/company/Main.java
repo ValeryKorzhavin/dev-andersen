@@ -1,22 +1,22 @@
 package com.company;
 
-import com.company.orientation.*;
+import com.company.orientation.East;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        CoordSystem coordSystem = new CoordSystem(5, 5);
+        int speed = 2;
+        CoordinateSystem coordSystem = new CoordinateSystem(5, 5);
         Entity tractor = new Tractor(new Position(0, 0), new East());
-        MoveBehavior forwards = new MoveForwards();
-        TurnBehavior clockWise = new TurnClockwise();
+        Command moveForwards = new MoveForwardsTractorCommand(tractor, speed);
+        Command turnClockWise = new TurnClockwiseTractorCommand(tractor);
 
         coordSystem.addEntity(tractor);
-        tractor.move(forwards, 1);
-        tractor.turn(clockWise);
-        tractor.move(forwards, 3); 
-        tractor.turn(clockWise);
-        tractor.move(forwards, 10);
+        tractor.setCommand(turnClockWise);
+        tractor.move();
+        tractor.setCommand(moveForwards);
+        tractor.move();
     }
 
 }

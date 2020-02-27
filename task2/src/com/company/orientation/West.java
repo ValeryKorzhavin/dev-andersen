@@ -4,7 +4,7 @@ import com.company.Orientation;
 import com.company.Position;
 
 public class West implements Orientation {
-	
+
     public Position moveThisDirection(Position position, int speed) {
         return new Position(position.getX() - speed, position.getY());
     }

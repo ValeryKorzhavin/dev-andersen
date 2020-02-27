@@ -8,7 +8,7 @@ public class East implements Orientation {
     public Position moveThisDirection(Position position, int speed) {
         return new Position(position.getX() + speed, position.getY());
     }
-	
+
     public Orientation turnLeft() {
         return new North();
     }

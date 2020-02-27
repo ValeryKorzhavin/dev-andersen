@@ -3,17 +3,17 @@ package com.company;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CoordSystem {
+public class CoordinateSystem {
 
     private int[][] field;
 
     private List<Entity> entities = new ArrayList<>();
 
-    public CoordSystem(int xSize, int ySize) {
+    public CoordinateSystem(int xSize, int ySize) {
         this.field = new int[xSize][ySize];
     }
 
-    public CoordSystem(int fieldSize) {
+    public CoordinateSystem(int fieldSize) {
         this(fieldSize, fieldSize);
     }
 

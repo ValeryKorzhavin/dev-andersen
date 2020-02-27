@@ -1,25 +1,24 @@
 package com.company;
 
-import com.company.exception.EntityOutOfBoundsException;
-
 public abstract class Entity {
 
-    protected Position position;
+    private Position position;
 
-    protected Orientation orientation;
+    private Orientation orientation;
 
-    protected CoordSystem field;
+    private CoordinateSystem field;
 
-    protected MoveBehavior moveBehavior; 
+    private Command command;
 
-    protected TurnBehavior turnBehavior;
+    public Entity(Position position, Orientation orientation) {
+        this.position = position;
+        this.orientation = orientation;
+    }
 
     /* implement for visualization */ 
     public abstract void draw();
 
-    public abstract EntityOutOfBoundsException getException();
-
-    public void setField(CoordSystem field) {
+    public void setField(CoordinateSystem field) {
         this.field = field;
     }
 
@@ -39,30 +38,22 @@ public abstract class Entity {
         this.orientation = orientation;
     }
 
-    public void move(MoveBehavior moveBehavior, int speed) {
-        Position newPosition = moveBehavior
-            .performMove(position, orientation, speed);
-        checkBounds(newPosition);
-        setPosition(newPosition);
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
-    public void turn(TurnBehavior turnBehavior) {
-        Orientation newOrientation = turnBehavior
-            .performTurn(orientation);
-        setOrientation(newOrientation);
+    public void move() {
+        command.execute();
     }
 
-    public void checkBounds(Position position) {
+    public boolean checkBounds(Position position) {
         boolean isOutX = position.getX() >= field.getSizeX() 
                       || position.getX() < 0;
 
         boolean isOutY = position.getY() >= field.getSizeY() 
                       || position.getY() < 0;
 
-        if (isOutX || isOutY) {
-            throw getException();        
-        }
-                   
+        return isOutX || isOutY;          
     }
 
     @Override
