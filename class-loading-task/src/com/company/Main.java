@@ -10,8 +10,6 @@ public class Main {
         IllegalAccessException, ClassNotFoundException {
 
         PrintService service = new PrintService();
-        service.setMessageProvider(new DefaultMessageProvider());
-        service.printMessage();
 
         Class klass = new CustomClassLoader()
             .findClass("com.company.ExternalMessageProvider");
