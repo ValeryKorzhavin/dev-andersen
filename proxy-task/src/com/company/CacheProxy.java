@@ -2,46 +2,58 @@ package com.company;
 
 import com.company.annotations.CachedClass;
 import com.company.annotations.CachedMethod;
-import com.company.service.Service;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Map;
-import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class CacheProxy {
+public class CacheProxy<T> {
 
-    private Map<MethodInfo, Object> storage = new HashMap<>();
+    private static Map<MethodInfo, Object> storage = new ConcurrentHashMap<>();
 
-    public Service cache(Service service) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(service.getClass());
-        enhancer.setCallback((MethodInterceptor) (object, method, args, proxy) -> {
-            String methodName = method.getName();
-            MethodInfo methodData = new MethodInfo(methodName, args);
-            Optional<Annotation> optClassCache = Optional
-                .ofNullable(method
-                    .getDeclaringClass()
-                    .getDeclaredAnnotation(CachedClass.class));
-            Optional<Annotation> optMethodCache = Optional
-                .ofNullable(method
-                    .getAnnotation(CachedMethod.class));
+    private static class CachingHandler implements InvocationHandler {
 
-            boolean useCache = optClassCache.isPresent()
-                            || optMethodCache.isPresent();
+        private Object original;
+
+        private CachingHandler(Object original) {
+            this.original = original;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method,
+                             Object[] args) throws Throwable {
+            MethodInfo methodData = new MethodInfo(method.getName(), args);
+            Annotation cachedClass = original
+                .getClass()
+                .getDeclaredAnnotation(CachedClass.class);
+            Annotation cachedMethod = original
+                .getClass()
+                .getAnnotation(CachedMethod.class);
+
+            boolean useCache = cachedClass != null
+                            || cachedMethod != null;
             if (!useCache) {
-                return proxy.invokeSuper(object, args);
+                return method.invoke(original, args);
             }
             if (storage.containsKey(methodData)) {
                 return storage.get(methodData);
             }
-            Object value = proxy.invokeSuper(object, args);
+            Object value = method.invoke(original, args);
             storage.put(methodData, value);
             return value;
-        });
-        return (Service) enhancer.create();
+        }
+    }
+
+    public T cache(T service) {
+        Object proxy = Proxy.newProxyInstance(
+            service.getClass().getClassLoader(),
+            service.getClass().getInterfaces(),
+            new CachingHandler(service)
+        );
+        return (T) proxy;
     }
 
 }
