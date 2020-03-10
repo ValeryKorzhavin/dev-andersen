@@ -20,7 +20,7 @@ public class Test {
 
     private static final Logger log = Logger.getLogger(Test.class.getName());
 
-    private static Integer task = TestConsts.N;
+    private static volatile Integer task = TestConsts.N;
 
     private static Set<Double> result = new HashSet<>();
 
